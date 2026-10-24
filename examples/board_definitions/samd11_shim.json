@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "name": "SAMD11 Shim on BREAD Prog",
+  "target": "samd11",
+  "firmware": "/firmware.bin",
+  "swd": {"swclk": "GPIO1", "swdio": "GPIO0", "reset": "GPIO2", "frequency": 1000000, "timeout": 2},
+  "power": {
+    "sense": "A2", "enable": "A1", "on_voltage": 2.2, "off_voltage": 2.0,
+    "settle_time": 0.1, "power_timeout": 5, "startup_delay": 2
+  },
+  "display": {
+    "enabled": true, "controller": "ssd1306", "sda": "GPIO8", "scl": "GPIO9",
+    "address": "0x3d", "width": 128, "height": 64, "rotation": 0
+  },
+  "usb": {
+    "enabled": false, "dp": "GPIO16", "dm": "GPIO17", "vid": "0x1209", "pid": "0x0001",
+    "timeout": 5, "required": false
+  }
+}

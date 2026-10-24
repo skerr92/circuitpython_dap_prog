@@ -65,7 +65,7 @@ class USBTests(unittest.TestCase):
 
 class BoardTests(unittest.TestCase):
     def setUp(self):
-        self.data = json.loads((ROOT / "boards/samd11_shim_usb.json").read_text())
+        self.data = json.loads((ROOT / "examples/board_definitions/samd11_shim_usb.json").read_text())
         self.data["display"]["enabled"] = False
         self.events = []
         self.found = {"vid": 0x1209, "pid": 1}

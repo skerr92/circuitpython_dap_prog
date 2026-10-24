@@ -7,6 +7,9 @@ import json
 import math
 import time
 
+__version__ = "0.0.0+auto.0"
+__repo__ = "https://github.com/skerr92/circuitpython_dap_prog.git"
+
 
 def _keys(value, allowed, required, where):
     if not isinstance(value, dict):

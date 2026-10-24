@@ -5,6 +5,9 @@ Copyright (c) 2026 Seth Kerr
 """
 import time
 
+__version__ = "0.0.0+auto.0"
+__repo__ = "https://github.com/skerr92/circuitpython_dap_prog.git"
+
 
 class StatusDisplay:
     """Own one OLED display; keep the last result visible between jobs.

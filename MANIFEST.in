@@ -1,0 +1,3 @@
+include LICENSE README.md requirements.txt optional_requirements.txt release.toml
+recursive-include examples *.py *.json
+global-exclude __pycache__ *.py[cod] *.mpy

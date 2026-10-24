@@ -7,7 +7,8 @@ Copyright (c) 2026 Seth Kerr
 import time
 from array import array
 
-__version__ = "0.1.1"
+__version__ = "0.0.0+auto.0"
+__repo__ = "https://github.com/skerr92/circuitpython_dap_prog.git"
 
 
 class DAPError(RuntimeError):

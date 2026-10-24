@@ -1,0 +1,24 @@
+[bundle]
+prefix = "circuitpython-dap-prog"
+modules = [
+  "Kavrous_cmsis_dap.py",
+  "Kavrous_power.py",
+  "Kavrous_usb.py",
+  "Kavrous_board.py",
+  "Kavrous_status.py",
+]
+examples = [
+  "examples/bread_power.py",
+  "examples/bread_prog.py",
+  "examples/configured_program.py",
+  "examples/usb_identify.py",
+]
+profiles = [
+  "examples/board_definitions/samd11_shim.json",
+  "examples/board_definitions/samd11_shim_usb.json",
+]
+documents = ["README.md", "LICENSE", "requirements.txt", "optional_requirements.txt"]
+
+[circuitpython]
+"9.x" = "9.2.9"
+"10.x" = "10.3.1"

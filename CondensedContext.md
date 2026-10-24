@@ -1,11 +1,15 @@
 # CondensedContext
 
 ## Context Freshness
-Last Verified Commit: cac7c0add9b06ddb1a71ce3c25b165560ff9ed47
-Current HEAD: cac7c0add9b06ddb1a71ce3c25b165560ff9ed47
-Status: partial (uncommitted implementation and documentation).
+Last Verified Commit: 1808841dea24e18fd8cd7e00b79352e857dec0fb
+Current HEAD: 1808841dea24e18fd8cd7e00b79352e857dec0fb
+Status: partial (uncommitted release automation and packaging).
 
 ## Current Focus
+Release automation: Adafruit compiler tooling, explicit multi-module bundles,
+tagged stable releases and weekly development snapshots. Prior implementation
+and README cleanup were committed by user in 1808841; earlier Uncommitted
+history entries below describe that now-committed work.
 Standalone CircuitPython SWD programming on BREAD RP2040, using PIO exclusively
 for pin clocking, shifting, and bidirectional turnaround.
 Added BREAD Prog power control: A2 senses external USB-C divider, A1 drives
@@ -23,6 +27,23 @@ status. User connected a USB data cable and SSD1306 OLED on SDA GPIO8/SCL GPIO9.
 - Existing README edits and empty library belong to user; preserve intended API.
 
 ## Handoff
+Release work ready for review/push; no remote workflow run or release created.
+GitHub build workflow runs host tests, packaging checks, source ZIP and CP9.x/
+10.x mpy-cross matrix. Release workflow handles v* tags, published releases,
+Monday 13:17 UTC snapshots only when HEAD differs from last published commit,
+and manual force rebuild. Uses GITHUB_TOKEN, read permissions except publish.
+Actions pinned by SHA; monthly Dependabot updates. Scheduled snapshots are
+prereleases and do not replace latest stable. Tagged releases pin exact commit.
+Adafruit standard bundler rejects multiple top-level modules, so
+tools/build_release.py uses its compiler downloader with release.toml allowlist.
+All five modules use version placeholders stamped in bundles. Compilers pinned
+to CircuitPython 9.2.9 / 10.3.1; archive contains lib, examples, public profiles,
+README/license/dependency lists and bundle.json. Builds replace ZIP only after
+success. Ignored local boards/ and firmware stay excluded. Public profile
+examples now live in examples/board_definitions and are mirrored into boards/
+inside release ZIPs. Existing board test fixture now reads the public example.
+pyproject.toml, requirements files and MANIFEST.in support Python packaging;
+no PyPI publication configured. Local .mpy/source ZIPs generated in bundles/.
 Implemented: reusable ARM AHB-AP layer; SAMD11/SAMD21, STM32F1 low/medium density,
 nRF52832/nRF52840 flash drivers; custom driver registration; streaming BIN/HEX;
 preflight before erase; page erase; readback; reset; pin/state-machine cleanup.
@@ -104,7 +125,11 @@ work pauses monitoring. No PIO resources consumed by power control.
 Temporary Python 3.13.7 embedded runtime and upstream adafruit_pioasm downloaded
 outside repository because installed Python aliases are unusable.
 Run: python -m unittest discover -s tests -v.
-Result: 64 tests passed; git diff --check passed.
+Result: 69 Python tests + 8 Node release-plan tests passed; actionlint and
+git diff --check passed. Real source, 9.x and 10.x ZIPs built; all five modules
+compiled. Python wheel/sdist built and twine check passed. Temporary embedded
+Python lacks venv, so local packaging used --no-isolation in a dedicated temp
+runtime; Ubuntu CI uses normal isolated build. GitHub execution pending push.
 Includes actual PIO assembly and an instruction model for direction/edge/bit
 order, SWD protocol, AP addressing, firmware preflight, and driver sequencing.
 Hardware programming, readback, reset release, and user-row preservation passed
@@ -159,6 +184,10 @@ Startup log: .hardware/power-startup.log. tools/start_board.ps1 restarts code.py
 and leaves it running; run_board.ps1 interrupts code.py (which disables power).
 
 ## Recent Changes
+- 2026-10-24: Added build/release workflows, weekly changed-commit prereleases,
+  explicit MPY bundles, packaging/version metadata, public example profiles,
+  Dependabot and release usage docs. 69 Python + 8 Node checks pass; actual
+  source/CP9/CP10 ZIPs built; actionlint and package metadata pass. Uncommitted.
 - 2026-10-24: Rewrote README around setup, BREAD Prog wiring, programming and
   startup checklist. Removed repetition and stale idle-script description;
   condensed API/configuration reference. Documentation only; local links and

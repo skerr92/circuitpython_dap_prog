@@ -17,7 +17,7 @@ built-in `usb_host` and `usb.core` modules.
 2. From the [Adafruit library bundle](https://circuitpython.org/libraries), add
    `adafruit_pioasm.mpy`. For the OLED, also add `adafruit_displayio_ssd1306.mpy`
    and the `adafruit_display_text` directory.
-3. Copy the `boards` directory onto the drive.
+3. Copy `examples/board_definitions` onto the drive as `/boards`.
 4. Copy your firmware onto the drive and set `firmware` in the board's JSON file
    to its path, such as `/firmware.bin`.
 
@@ -48,9 +48,9 @@ assignments to keep it separate from SWD.
 
 Choose a profile:
 
-- [samd11_shim.json](boards/samd11_shim.json) programs over SWD with a power-only
+- [samd11_shim.json](examples/board_definitions/samd11_shim.json) programs over SWD with a power-only
   USB cable to the target.
-- [samd11_shim_usb.json](boards/samd11_shim_usb.json) also reads USB VID/PID after
+- [samd11_shim_usb.json](examples/board_definitions/samd11_shim_usb.json) also reads USB VID/PID after
   programming. Use a USB data cable for this one.
 
 ```python
@@ -218,6 +218,44 @@ IDs accept integers or hexadecimal strings. The caller supplies target power.
 Create the USB host before allocating SWD state machines. CircuitPython's PIO
 USB port persists across soft reloads and has no `deinit()`. Reuse the same
 pins, or perform a hardware reset to change them or release its resources.
+
+## Releases
+
+Download bundles from [GitHub Releases](https://github.com/skerr92/circuitpython_dap_prog/releases).
+Choose the `.mpy` ZIP matching your CircuitPython major version, or the `py`
+ZIP for source files. Copy its `lib` contents onto `CIRCUITPY`; the ZIP also
+contains examples and a `boards` directory with public sample profiles.
+Install the Adafruit dependencies listed under Setup separately.
+
+Pushing a version tag builds the bundles and creates a release:
+
+```sh
+git tag -a v0.1.2 -m "Release 0.1.2"
+git push origin v0.1.2
+```
+
+Publishing a release through GitHub also builds and attaches the bundles.
+Tags such as `v0.1.2-rc.1` become prereleases. Every Monday at 13:17 UTC, the
+release workflow creates a dated development prerelease if there are commits
+since the last release. These snapshots don't replace the latest stable release.
+Use **Actions → Release → Run workflow** for a manual snapshot; select `force`
+to rebuild an unchanged commit.
+
+`release.toml` lists the modules, example files, and compiler versions to bundle.
+Builds use Adafruit's `circuitpython-build-tools` to obtain `mpy-cross`. The
+`0.0.0+auto.0` version markers are replaced in the bundled modules with the
+release version. Local board profiles and firmware aren't included.
+
+To build a ZIP locally, use host Python 3.11 or newer:
+
+```sh
+python -m pip install -r requirements-dev.txt
+python tools/build_release.py build --target source --version 0.1.2
+python tools/build_release.py build --target 10.x --version 0.1.2
+```
+
+The output goes into `bundles/`. Compiler versions and the available bundle
+targets are set in `release.toml`.
 
 ## Contributing
 
